@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { siteConfig } from '@/config/site';
 import Nav from '@/components/Nav';
+import { ThemeProvider } from '@/context/theme-provider';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -27,10 +28,12 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={cn(inter.className, 'min-h-screen antialiased')}>
-        <div className='container max-w-7xl pt-12'>
-          <Nav />
-          {children}
-        </div>
+        <ThemeProvider attribute='class' defaultTheme='system' enableSystem>
+          <div className='container max-w-7xl pt-12'>
+            <Nav />
+            {children}
+          </div>
+        </ThemeProvider>
       </body>
     </html>
   );
