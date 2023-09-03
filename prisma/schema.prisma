@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("MIGRATE_DATABASE_URL")
 }
 
 model Account {
@@ -45,6 +46,7 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
+  Game          Game[]
 }
 
 model VerificationToken {
@@ -53,4 +55,38 @@ model VerificationToken {
   expires    DateTime
 
   @@unique([identifier, token])
+}
+
+enum GameType {
+  mcq
+  open_ended
+}
+
+model Game {
+  id          String     @id @default(cuid())
+  userId      String
+  timeStarted DateTime
+  topic       String
+  timeEnded   DateTime?
+  gameType    GameType
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  questions   Question[]
+
+  @@index([userId], name: "userId")
+}
+
+model Question {
+  id                String   @id @default(cuid())
+  question          String
+  answer            String
+  gameId            String
+  options           Json? // Only for mcq type
+  isCorrect         Boolean? // Only for mcq type
+  percentageCorrect Float? // Only for open_ended type
+  questionType      GameType
+  userAnswer        String?
+
+  game Game @relation(fields: [gameId], references: [id], onDelete: Cascade)
+
+  @@index([gameId], name: "gameId")
 }
