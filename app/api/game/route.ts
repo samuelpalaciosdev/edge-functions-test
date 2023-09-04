@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth';
 import prisma from '@/lib/db';
 import { mcqQuestionType } from '@/types';
 import { OpenEndedQuestionType } from '@/types';
-import { quizSchema } from '@/types';
+import { quizSchema } from '@/lib/validation/game';
 import axios from 'axios';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';

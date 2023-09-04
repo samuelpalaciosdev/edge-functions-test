@@ -1,5 +1,5 @@
 import strictJsonOutput from '@/lib/gpt';
-import { quizSchema } from '@/types';
+import { quizSchema } from '@/lib/validation/game';
 import { NextResponse } from 'next/server';
 import { ZodError } from 'zod';
 
